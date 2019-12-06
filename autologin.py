@@ -1,6 +1,7 @@
-import requests
-import os 
 import sys
+import os
+import datetime
+import requests
 import re
 
 def get_real_url():
@@ -57,12 +58,19 @@ def login(real_url, user_id, password):
 			sys.stderr.write("login failed : "+respone.text)
 
 
+
+
+
 if __name__ == "__main__":
-	if len(sys.argv) != 3:
-		print("Usage:\n\tpython login.py user-id password\n")
-	else :
+	# ---- 检测网络连通情况
+	result =  os.system("ping -c 2 www.baidu.com")
+	if result:
+		# 自动重连
 		real_url = get_real_url()
 		if real_url is None:
 			sys.stderr.write("\nlogin failed : May be you are already online.\n")
 			exit()
 		login(real_url, sys.argv[1], sys.argv[2])
+	else :
+		exit()
+
